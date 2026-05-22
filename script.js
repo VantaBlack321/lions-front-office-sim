@@ -60,7 +60,7 @@ function renderRoster() {
 renderRoster()
 
 // ======================================================
-// ACTION SYSTEM
+// ACTION SELECT SYSTEM
 // ======================================================
 
 document.getElementById("runActionBtn").addEventListener("click", function() {
@@ -136,4 +136,21 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
         renderRoster();
     }
 
+});
+
+// ======================================================
+// ARRANGE SELECT SYSTEM
+// ======================================================
+
+document.getElementById("arrangeBtn").addEventListener("click", function() {
+    const arrangeAction = document.getElementById("actionArrange").value;
+
+    if (arrangeAction === "Age") {
+        playerRoster.sort((a, b) => a.age - b.age);
+        renderRoster();
+
+    } else if (arrangeAction === "Overall") {
+        playerRoster.sort((a, b) => b.overall - a.overall);
+        renderRoster();
+    }
 });
