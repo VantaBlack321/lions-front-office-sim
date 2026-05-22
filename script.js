@@ -7,16 +7,22 @@ console.log("This is a Lions GM Simulator")
 
 const playerRoster = []
 
+// ======================================================
+// PLAYER FUNCTIONS
+// ======================================================
+
 function addPlayer(name, position, age, overall) {
     const player = {
         name: name,
         position: position,
         age: age,
-        overall: overall            
+        overall: overall
     }
+
     playerRoster.push(player)
 }
 
+// Starting test players
 addPlayer("Jared Goff", "QB", 32, 80)
 addPlayer("Amon-Ra St. Brown", "WR", 25, 82)
 addPlayer("D'Andre Swift", "RB", 28, 78)
@@ -28,55 +34,106 @@ console.log(playerRoster)
 // ======================================================
 
 // HTML id = gives an element a name
-// document.getElementById("playerName") = JavaScript finds that HTML element
-// .value = JavaScript grabs what the user typed
-// addEventListener("click") = waits for the button click
-// addPlayer(...) = uses the input values to create/store the player
-// innerHTML = shows the result visually on the website
+// document.getElementById(...) = JavaScript finds the HTML element
+// .value = grabs the value typed by the user
+// addEventListener(...) = waits for user interaction
+// innerHTML = updates the website visually
 
 function renderRoster() {
     document.getElementById("rosterDisplay").innerHTML = `
         <ul>
             ${playerRoster.map(player => {
-                return `<li>${player.name} - ${player.position} - Age: ${player.age}</li>`;
+                return `
+                    <li>
+                        ${player.name} - 
+                        ${player.position} - 
+                        Age: ${player.age} - 
+                        Overall: ${player.overall}
+                    </li>
+                `;
             }).join("")}
         </ul>
     `;
 }
 
+// Show starting roster immediately
+renderRoster()
+
+// ======================================================
+// ACTION SYSTEM
+// ======================================================
+
 document.getElementById("runActionBtn").addEventListener("click", function() {
+
     const selectedAction = document.getElementById("actionSelect").value;
 
-    if (selectedAction === "addPlayerBtn") {
-        const nameInput = document.getElementById("playerName").value;
-        const positionInput = document.getElementById("playerPosition").value;
-        const ageInput = parseInt(document.getElementById("playerAge").value);
+    // ======================================================
+    // ADD PLAYER
+    // ======================================================
 
-        addPlayer(nameInput, positionInput, ageInput);
+    // Grab values typed into the input fields
+    // Add a new player object into the playerRoster array
+    // Re-render the roster display using updated roster data
+
+    if (selectedAction === "addPlayerBtn") {
+
+        const nameInput = document.getElementById("playerName").value;
+
+        const positionInput = document.getElementById("playerPosition").value;
+
+        const ageInput = parseInt(
+            document.getElementById("playerAge").value
+        );
+
+        const overallInput = parseInt(
+            document.getElementById("playerOverall").value
+        );
+
+        addPlayer(
+            nameInput,
+            positionInput,
+            ageInput,
+            overallInput
+        );
+
         renderRoster();
+
+    // ======================================================
+    // REMOVE PLAYER
+    // ======================================================
+
+    // Grab the player name typed into the input field
+    // Find the matching player inside the playerRoster array
+    // Remove the player from the array if found
+    // Re-render the roster display
 
     } else if (selectedAction === "RemovePlayerBtn") {
 
-        const nameToRemove = document.getElementById("playerName").value;
-        
-        const index = playerRoster.findIndex(player => player.name === nameToRemove);
+        const nameToRemove =
+            document.getElementById("playerName").value;
+
+        const index = playerRoster.findIndex(
+            player => player.name === nameToRemove
+        );
 
         if (index !== -1) {
-        playerRoster.splice(index, 1);
+            playerRoster.splice(index, 1);
+            renderRoster();
 
-        document.getElementById("rosterDisplay").innerHTML = `
-            <ul>
-                ${playerRoster.map(player => {
-                    return `<li>${player.name} - ${player.position} - Age: ${player.age}</li>`;
-                }).join("")}
-            </ul>
-        `;
-    } else {
-        alert("Player not found in roster.");
-    }
+        } else {
+            alert("Player not found in roster.");
+        }
+
+    // ======================================================
+    // CLEAR ROSTER
+    // ======================================================
+
+    // Remove all players from the roster array
+    // Clear the roster display on the website
 
     } else if (selectedAction === "ClearRosterBtn") {
         playerRoster.length = 0;
         renderRoster();
     }
+
 });
