@@ -145,10 +145,14 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 document.getElementById("arrangeBtn").addEventListener("click", function() {
     const arrangeAction = document.getElementById("actionArrange").value;
 
+    // Sort the playerRoster array based on the selected arrangement criteria
+
+    // If "Age" is selected, sort players from youngest to oldest
     if (arrangeAction === "Age") {
         playerRoster.sort((a, b) => a.age - b.age);
         renderRoster();
-
+    
+    // If "Overall" is selected, sort players from highest to lowest overall rating
     } else if (arrangeAction === "Overall") {
         playerRoster.sort((a, b) => b.overall - a.overall);
         renderRoster();
