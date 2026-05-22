@@ -5,9 +5,13 @@
 <input id="playerAge" placeholder="Age">
 <input id="playerOverall" placeholder="Overall">
 
-<button id="addPlayerBtn">Add Player</button>
-<button id="RemovePlayerBtn">Remove Player</button>
-<button id="ClearRosterBtn">Clear Roster</button>
+<select id="actionSelect">
+  <option value="addPlayerBtn">Add Player</option>
+  <option value="RemovePlayerBtn">Remove Player</option>
+  <option value="ClearRosterBtn">Clear Roster</option>
+</select>
+
+<button id="runActionBtn">Run Action</button>
 
 <div id="rosterDisplay"></div>
 
