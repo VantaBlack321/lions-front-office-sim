@@ -13,21 +13,22 @@ const playerRoster = []
 
 
 // Create a player object and store it inside the roster array
-function addPlayer(name, position, age, overall) {
+function addPlayer(name, position, age, overall, salary) {
     const player = {
         name: name,
         position: position,
         age: age,
-        overall: overall
+        overall: overall,
+        salary: salary
     }
 
     playerRoster.push(player)
 }
 
 // Starting test players for the roster
-addPlayer("Jared Goff", "QB", 32, 80)
-addPlayer("Amon-Ra St. Brown", "WR", 25, 82)
-addPlayer("D'Andre Swift", "RB", 28, 78)
+addPlayer("Jared Goff", "QB", 32, 80, 150000)
+addPlayer("Amon-Ra St. Brown", "WR", 25, 82, 130000)
+addPlayer("D'Andre Swift", "RB", 28, 78, 120000)
 
 console.log(playerRoster)
 
@@ -41,6 +42,8 @@ console.log(playerRoster)
 // addEventListener(...) = waits for user interaction
 // innerHTML = updates the website display dynamically
 
+const salaryCapMax = 301200000
+
 // Rebuild the roster display using current playerRoster data
 function renderRoster() {
     document.getElementById("rosterDisplay").innerHTML = `
@@ -51,7 +54,8 @@ function renderRoster() {
                         ${player.name} - 
                         ${player.position} - 
                         Age: ${player.age} - 
-                        Overall: ${player.overall}
+                        Overall: ${player.overall} - 
+                        Salary: ${player.salary}
                     </li>
                 `;
             }).join("")}
@@ -93,23 +97,29 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
             document.getElementById("playerOverall").value
         );
 
-        addPlayer(
-            nameInput,
-            positionInput,
-            ageInput,
-            overallInput
-        );
-
-        renderRoster();
+        const salaryInput = parseInt(
+            document.getElementById("salaryCap").value
+        )
 
         // Check if the player already exists in the roster
         const existingPlayer = playerRoster.find(player => player.name === nameInput);
 
+        // Calculate current total salary before adding the new player
+        const totalSalary = playerRoster.reduce((total, player) => {
+            return total + player.salary;
+        }, 0);
+
         // Prevent duplicate players from being added
         if (existingPlayer) {
             alert("Player already exists in roster.");
+
+        // Prevent player from being added if salary cap would be exceeded
+        } else if (totalSalary + salaryInput > salaryCapMax) {
+            alert("Unavailable: salary cap exceeded.");
+
+        // If all checks pass, add the player
         } else {
-            addPlayer(nameInput, positionInput, ageInput, overallInput);
+            addPlayer(nameInput, positionInput, ageInput, overallInput, salaryInput);
             renderRoster();
         }
 
