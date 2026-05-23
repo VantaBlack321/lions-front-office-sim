@@ -98,6 +98,15 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 
         renderRoster();
 
+        const existingPlayer = playerRoster.find(player => player.name === nameInput);
+
+        if (existingPlayer) {
+            alert("Player already exists in roster.");
+        } else {
+            addPlayer(nameInput, positionInput, ageInput, overallInput);
+            renderRoster();
+        }
+
     // ======================================================
     // REMOVE PLAYER
     // ======================================================
@@ -148,13 +157,41 @@ document.getElementById("arrangeBtn").addEventListener("click", function() {
     // Sort the playerRoster array based on the selected arrangement criteria
 
     // If "Age" is selected, sort players from youngest to oldest
-    if (arrangeAction === "Age") {
+    if (arrangeAction === "sortAge") {
         playerRoster.sort((a, b) => a.age - b.age);
         renderRoster();
     
     // If "Overall" is selected, sort players from highest to lowest overall rating
-    } else if (arrangeAction === "Overall") {
+    } else if (arrangeAction === "sortOverall") {
         playerRoster.sort((a, b) => b.overall - a.overall);
         renderRoster();
+    }
+});
+
+document.getElementById("editAgeBtn").addEventListener("click", function() {
+    const nameInput = document.getElementById("playerName").value;
+    const ageInput = parseInt(document.getElementById("playerAge").value);
+
+    const playerToEdit = playerRoster.find(player => player.name === nameInput);
+
+    if (playerToEdit) {
+        playerToEdit.age = ageInput;
+        renderRoster();
+    } else {
+        alert("Player not found in roster.");
+    }
+});
+
+document.getElementById("editOverallBtn").addEventListener("click", function() {
+    const nameInput = document.getElementById("playerName").value;
+    const overallInput = parseInt(document.getElementById("playerOverall").value);
+
+    const playerToEdit = playerRoster.find(player => player.name === nameInput);
+
+    if (playerToEdit) {
+        playerToEdit.overall = overallInput;
+        renderRoster();
+    } else {
+        alert("Player not found in roster.");
     }
 });
