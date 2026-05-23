@@ -36,25 +36,6 @@ function addPlayer(name, position, age, overall, salary) {
 
 const salaryCapMax = 301200000
 
-// Rebuild the roster display using current playerRoster data
-function renderRoster() {
-    document.getElementById("rosterDisplay").innerHTML = `
-        <ul>
-            ${playerRoster.map(player => {
-                return `
-                    <li>
-                        ${player.name} - 
-                        ${player.position} - 
-                        Age: ${player.age} - 
-                        Overall: ${player.overall} - 
-                        Salary: ${player.salary}
-                    </li>
-                `;
-            }).join("")}
-        </ul>
-    `;
-}
-
 // Show the starting roster immediately when the page loads
 function renderRoster() {
     document.getElementById("rosterDisplay").innerHTML = `
