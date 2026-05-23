@@ -1,6 +1,6 @@
 // ======================================================
 // LIONS GM SIMULATOR
-// TESTING ONLY FOR CONSOLE / DEBUGGING
+// TESTING / DEBUGGING
 // ======================================================
 
 console.log("This is a Lions GM Simulator")
@@ -11,6 +11,8 @@ const playerRoster = []
 // PLAYER FUNCTIONS
 // ======================================================
 
+
+// Create a player object and store it inside the roster array
 function addPlayer(name, position, age, overall) {
     const player = {
         name: name,
@@ -22,7 +24,7 @@ function addPlayer(name, position, age, overall) {
     playerRoster.push(player)
 }
 
-// Starting test players
+// Starting test players for the roster
 addPlayer("Jared Goff", "QB", 32, 80)
 addPlayer("Amon-Ra St. Brown", "WR", 25, 82)
 addPlayer("D'Andre Swift", "RB", 28, 78)
@@ -30,15 +32,16 @@ addPlayer("D'Andre Swift", "RB", 28, 78)
 console.log(playerRoster)
 
 // ======================================================
-// WEBSITE RENDERING / VISUAL DISPLAY
+// WEBSITE RENDERING / UI DISPLAY
 // ======================================================
 
-// HTML id = gives an element a name
-// document.getElementById(...) = JavaScript finds the HTML element
+// HTML id = gives an HTML element a unique name
+// document.getElementById(...) = finds an HTML element
 // .value = grabs the value typed by the user
 // addEventListener(...) = waits for user interaction
-// innerHTML = updates the website visually
+// innerHTML = updates the website display dynamically
 
+// Rebuild the roster display using current playerRoster data
 function renderRoster() {
     document.getElementById("rosterDisplay").innerHTML = `
         <ul>
@@ -56,24 +59,25 @@ function renderRoster() {
     `;
 }
 
-// Show starting roster immediately
+// Show the starting roster immediately when the page loads
 renderRoster()
 
 // ======================================================
-// ACTION SELECT SYSTEM
+// MAIN ACTION SYSTEM
 // ======================================================
 
 document.getElementById("runActionBtn").addEventListener("click", function() {
 
+    // Get the selected action from the dropdown menu
     const selectedAction = document.getElementById("actionSelect").value;
 
     // ======================================================
     // ADD PLAYER
     // ======================================================
 
-    // Grab values typed into the input fields
-    // Add a new player object into the playerRoster array
-    // Re-render the roster display using updated roster data
+    // Grab player information from the input fields
+    // Add the new player into the roster
+    // Re-render the updated roster display
 
     if (selectedAction === "addPlayerBtn") {
 
@@ -98,8 +102,10 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 
         renderRoster();
 
+        // Check if the player already exists in the roster
         const existingPlayer = playerRoster.find(player => player.name === nameInput);
 
+        // Prevent duplicate players from being added
         if (existingPlayer) {
             alert("Player already exists in roster.");
         } else {
@@ -112,12 +118,13 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     // ======================================================
 
     // Grab the player name typed into the input field
-    // Find the matching player inside the playerRoster array
-    // Remove the player from the array if found
-    // Re-render the roster display
+    // Find the matching player inside the roster array
+    // Remove the player if a match is found
+    // Re-render the updated roster display
 
     } else if (selectedAction === "RemovePlayerBtn") {
 
+        // Find the player's position/index inside the array
         const nameToRemove =
             document.getElementById("playerName").value;
 
@@ -125,6 +132,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
             player => player.name === nameToRemove
         );
 
+        // Remove the player from the roster array
         if (index !== -1) {
             playerRoster.splice(index, 1);
             renderRoster();
@@ -152,21 +160,27 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 // ======================================================
 
 document.getElementById("arrangeBtn").addEventListener("click", function() {
+    
+    // Get the selected sorting option from the dropdown
     const arrangeAction = document.getElementById("actionArrange").value;
 
     // Sort the playerRoster array based on the selected arrangement criteria
 
-    // If "Age" is selected, sort players from youngest to oldest
+    // Sort players from youngest to oldest
     if (arrangeAction === "sortAge") {
         playerRoster.sort((a, b) => a.age - b.age);
         renderRoster();
     
-    // If "Overall" is selected, sort players from highest to lowest overall rating
+    // Sort players from highest overall to lowest overall
     } else if (arrangeAction === "sortOverall") {
         playerRoster.sort((a, b) => b.overall - a.overall);
         renderRoster();
     }
 });
+
+// ======================================================
+// EDIT SYSTEM
+// ======================================================
 
 document.getElementById("editAgeBtn").addEventListener("click", function() {
     const nameInput = document.getElementById("playerName").value;
@@ -175,7 +189,9 @@ document.getElementById("editAgeBtn").addEventListener("click", function() {
     const playerToEdit = playerRoster.find(player => player.name === nameInput);
 
     if (playerToEdit) {
+        // Edit a player's age using the typed player name
         playerToEdit.age = ageInput;
+        // Update the player's age and refresh the display
         renderRoster();
     } else {
         alert("Player not found in roster.");
@@ -189,7 +205,9 @@ document.getElementById("editOverallBtn").addEventListener("click", function() {
     const playerToEdit = playerRoster.find(player => player.name === nameInput);
 
     if (playerToEdit) {
+        // Edit a player's overall rating using the typed player name
         playerToEdit.overall = overallInput;
+        // Update the player's overall rating and refresh the display
         renderRoster();
     } else {
         alert("Player not found in roster.");
