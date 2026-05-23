@@ -54,14 +54,14 @@ function renderRoster() {
         </ul>
     `;
 
-    const totalOverall = playerRoster.reduce((total, player) => {
+    const totalOverallRating = playerRoster.reduce((total, player) => {
         return total + player.overall;
     }, 0);
 
-    const averageOverall = totalOverall / playerRoster.length;
+    const averageOverallRating = totalOverallRating / playerRoster.length;
 
     document.getElementById("averageOverallRating").innerText =
-        `Average Overall Rating: ${averageOverall}`;
+        `Average Overall Rating: ${averageOverallRating}`;
 }
 
 // ======================================================
