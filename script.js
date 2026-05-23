@@ -11,7 +11,6 @@ const playerRoster = []
 // PLAYER FUNCTIONS
 // ======================================================
 
-
 // Create a player object and store it inside the roster array
 function addPlayer(name, position, age, overall, salary) {
     const player = {
@@ -24,13 +23,6 @@ function addPlayer(name, position, age, overall, salary) {
 
     playerRoster.push(player)
 }
-
-// Starting test players for the roster
-addPlayer("Jared Goff", "QB", 32, 80, 150000)
-addPlayer("Amon-Ra St. Brown", "WR", 25, 82, 130000)
-addPlayer("D'Andre Swift", "RB", 28, 78, 120000)
-
-console.log(playerRoster)
 
 // ======================================================
 // WEBSITE RENDERING / UI DISPLAY
@@ -64,7 +56,32 @@ function renderRoster() {
 }
 
 // Show the starting roster immediately when the page loads
-renderRoster()
+function renderRoster() {
+    document.getElementById("rosterDisplay").innerHTML = `
+        <ul>
+            ${playerRoster.map(player => {
+                return `
+                    <li>
+                        ${player.name} - 
+                        ${player.position} - 
+                        Age: ${player.age} - 
+                        Overall: ${player.overall} - 
+                        Salary: ${player.salary}
+                    </li>
+                `;
+            }).join("")}
+        </ul>
+    `;
+
+    const totalOverall = playerRoster.reduce((total, player) => {
+        return total + player.overall;
+    }, 0);
+
+    const averageOverall = totalOverall / playerRoster.length;
+
+    document.getElementById("averageOverallRating").innerText =
+        `Average Overall Rating: ${averageOverall}`;
+}
 
 // ======================================================
 // MAIN ACTION SYSTEM
