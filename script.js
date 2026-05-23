@@ -183,6 +183,10 @@ document.getElementById("arrangeBtn").addEventListener("click", function() {
     } else if (arrangeAction === "sortOverall") {
         playerRoster.sort((a, b) => b.overall - a.overall);
         renderRoster();
+    
+    } else if (arrangeAction === "sortSalary") {
+        playerRoster.sort((a, b) => b.overall - a.overall);
+        renderRoster();
     }
 });
 
