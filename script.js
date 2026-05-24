@@ -151,7 +151,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     // Remove the player if a match is found
     // Re-render the updated roster display
 
-    } else if (selectedAction === "RemovePlayerBtn") {
+    } else if (selectedAction === "removePlayerBtn") {
 
         // Find the player's position/index inside the array
         const nameToRemove =
@@ -187,7 +187,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     // Remove all players from the roster array
     // Clear the roster display on the website
 
-    } else if (selectedAction === "ClearRosterBtn") {
+    } else if (selectedAction === "clearRosterBtn") {
         playerRoster.length = 0;
         renderRoster();
     }
