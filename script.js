@@ -12,13 +12,14 @@ const playerRoster = []
 // ======================================================
 
 // Create a player object and store it inside the roster array
-function addPlayer(name, position, age, overall, salary) {
+function addPlayer(name, position, age, overall, salary, unit) {
     const player = {
         name: name,
         position: position,
         age: age,
         overall: overall,
-        salary: salary
+        salary: salary,
+        unit: unit
     }
 
     playerRoster.push(player)
@@ -48,6 +49,7 @@ function renderRoster() {
                         Age: ${player.age} - 
                         Overall: ${player.overall} - 
                         Salary: ${player.salary}
+                        Unit: ${player.unit}
                     </li>
                 `;
             }).join("")}
@@ -62,6 +64,22 @@ function renderRoster() {
 
     document.getElementById("averageOverallRating").innerText =
         `Average Overall Rating: ${averageOverallRating}`;
+    
+    const averageAge = playerRoster.reduce((total, player) => {
+        return total + player.age;
+    }, 0);
+
+    document.getElementById("averageAges").innerText = 
+        `Average Ages: ${averageAge}`;
+
+    const totalSalaryCap = playerRoster.reduce((total, player) => {
+        return total + player.salary;
+    }, 0);
+
+    const remainingSalaryCap = salaryCapMax - totalSalaryCap
+
+    document.getElementById("remainingSalaryCap").innerText = 
+        `Remaining Salary Cap: ${remainingSalaryCap}`;
 }
 
 // ======================================================
@@ -99,6 +117,8 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
             document.getElementById("salaryCap").value
         )
 
+        const unitInput = document.getElementById("playerUnit").value;
+
         // Check if the player already exists in the roster
         const existingPlayer = playerRoster.find(player => player.name === nameInput);
 
@@ -117,7 +137,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 
         // If all checks pass, add the player
         } else {
-            addPlayer(nameInput, positionInput, ageInput, overallInput, salaryInput);
+            addPlayer(nameInput, positionInput, ageInput, overallInput, salaryInput, unitInput);
             renderRoster();
         }
 
@@ -221,6 +241,31 @@ document.getElementById("editOverallBtn").addEventListener("click", function() {
         playerToEdit.overall = overallInput;
         // Update the player's overall rating and refresh the display
         renderRoster();
+    } else {
+        alert("Player not found in roster.");
+    }
+});
+
+document.getElementById("editSalaryBtn").addEventListener("click", function() {
+    const nameInput = document.getElementById("playerName").value;
+    const salaryInput = parseInt(document.getElementById("salaryCap").value);
+
+    const playerToEdit = playerRoster.find(player => player.name === nameInput);
+
+    if (playerToEdit) {
+        const totalSalary = playerRoster.reduce((total, player) => {
+            return total + player.salary;
+        }, 0);
+
+        const newTotalSalary = totalSalary - playerToEdit.salary + salaryInput;
+
+        if (newTotalSalary > salaryCapMax) {
+            alert("Unavailable: salary cap exceeded.");
+        } else {
+            playerToEdit.salary = salaryInput;
+            renderRoster();
+        }
+
     } else {
         alert("Player not found in roster.");
     }
