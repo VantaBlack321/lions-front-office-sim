@@ -6,7 +6,12 @@
 console.log("This is a Lions GM Simulator")
 
 const playerRoster = []
+
+// removedPlayers = cut / released / retired
 const removedPlayers = []
+
+// tradedPlayers = sent to another team
+const tradedPlayers = []
 
 // ======================================================
 // PLAYER FUNCTIONS
