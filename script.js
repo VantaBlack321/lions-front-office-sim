@@ -6,6 +6,7 @@
 console.log("This is a Lions GM Simulator")
 
 const playerRoster = []
+const removedPlayers = []
 
 // ======================================================
 // PLAYER FUNCTIONS
@@ -162,8 +163,18 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 
         // Remove the player from the roster array
         if (index !== -1) {
+            const removedPlayer = playerRoster[index];
+
+            const reasonInput = document.getElementById("removeReason").value;
+
+            removedPlayer.remove = reasonInput;
+
+            removedPlayers.push(removedPlayer);
             playerRoster.splice(index, 1);
+
             renderRoster();
+
+            renderRemovedPlayers();
 
         } else {
             alert("Player not found in roster.");
@@ -183,6 +194,24 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 
 });
 
+function renderRemovedPlayers() {
+    document.getElementById("removedPlayersDisplay").innerHTML = `
+        <ul>
+            ${removedPlayers.map(player => {
+                return `
+                    <li>
+                        ${player.name} -
+                        ${player.position} -
+                        Age: ${player.age} -
+                        Overall: ${player.overall} -
+                        Salary: ${player.salary} -
+                        Remove Reasons: ${player.remove}
+                    </li>
+                `;
+            }).join("")}
+        </ul>
+    `;
+}
 // ======================================================
 // ARRANGE SELECT SYSTEM
 // ======================================================
