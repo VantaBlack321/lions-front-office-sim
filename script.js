@@ -54,7 +54,7 @@ function renderRoster() {
                         ${player.position} - 
                         Age: ${player.age} - 
                         Overall: ${player.overall} - 
-                        Salary: ${player.salary}
+                        Salary: ${player.salary} -
                         Unit: ${player.unit}
                     </li>
                 `;
@@ -62,11 +62,14 @@ function renderRoster() {
         </ul>
     `;
 
+    const averageOverallRating = totalOverallRating / playerRoster.length;
+    if (playerRoster.length === 0) {
+        print("N/A")
+    }
+
     const totalOverallRating = playerRoster.reduce((total, player) => {
         return total + player.overall;
     }, 0);
-
-    const averageOverallRating = totalOverallRating / playerRoster.length;
 
     document.getElementById("averageOverallRating").innerText =
         `Average Overall Rating: ${averageOverallRating}`;
@@ -137,15 +140,27 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
         if (existingPlayer) {
             alert("Player already exists in roster.");
 
+
         // Prevent player from being added if salary cap would be exceeded
         } else if (totalSalary + salaryInput > salaryCapMax) {
             alert("Unavailable: salary cap exceeded.");
 
         // If all checks pass, add the player
         } else {
+
+            const removedIndex = removedPlayers.findIndex(
+                player => player.name === nameInput
+            );
+
+            if (removedIndex !== -1) {
+                removedPlayers.splice(removedIndex, 1);
+            }
+
             addPlayer(nameInput, positionInput, ageInput, overallInput, salaryInput, unitInput);
+
             renderRoster();
-        }
+            renderRemovedPlayers();
+}
 
     // ======================================================
     // REMOVE PLAYER
@@ -210,6 +225,7 @@ function renderRemovedPlayers() {
                         Age: ${player.age} -
                         Overall: ${player.overall} -
                         Salary: ${player.salary} -
+                        Unit: ${player.unit} -
                         Remove Reasons: ${player.remove}
                     </li>
                 `;
