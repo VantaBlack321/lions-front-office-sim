@@ -62,33 +62,34 @@ function renderRoster() {
         </ul>
     `;
 
-    const averageOverallRating = totalOverallRating / playerRoster.length;
-    if (playerRoster.length === 0) {
-        print("N/A")
-    }
-
     const totalOverallRating = playerRoster.reduce((total, player) => {
-        return total + player.overall;
+    return total + player.overall;
     }, 0);
+
+    const totalAge = playerRoster.reduce((total, player) => {
+    return total + player.age;
+    }, 0);
+
+    if (playerRoster.length === 0) {
+    document.getElementById("averageOverallRating").innerText =
+        "Average Overall Rating: N/A";
+
+    document.getElementById("averageAges").innerText =
+        "Average Ages: N/A";
+
+    } else {
+    const averageOverallRating =
+        totalOverallRating / playerRoster.length;
+
+    const averageAge =
+        totalAge / playerRoster.length;
 
     document.getElementById("averageOverallRating").innerText =
         `Average Overall Rating: ${averageOverallRating}`;
-    
-    const averageAge = playerRoster.reduce((total, player) => {
-        return total + player.age;
-    }, 0);
 
-    document.getElementById("averageAges").innerText = 
+    document.getElementById("averageAges").innerText =
         `Average Ages: ${averageAge}`;
-
-    const totalSalaryCap = playerRoster.reduce((total, player) => {
-        return total + player.salary;
-    }, 0);
-
-    const remainingSalaryCap = salaryCapMax - totalSalaryCap
-
-    document.getElementById("remainingSalaryCap").innerText = 
-        `Remaining Salary Cap: ${remainingSalaryCap}`;
+    }
 }
 
 // ======================================================
@@ -210,8 +211,35 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     } else if (selectedAction === "clearRosterBtn") {
         playerRoster.length = 0;
         renderRoster();
-    }
 
+    } else if (selectedAction === "tradePlayerBtn") {
+        const nameToTrade = document.getElementById("playerName").value;
+
+        const index = playerRoster.findIndex(
+            player => player.name === nameToTrade
+        );
+
+        if (index !== -1) {
+            const tradedPlayer = playerRoster[index];
+
+            const reasonInput = document.getElementById("tradeReason").value;
+            const teamInput = document.getElementById("tradeTeam").value;
+            const returnInput = document.getElementById("tradeReturn").value;
+
+            tradedPlayer.tradeReason = reasonInput;
+            tradedPlayer.tradedTo = teamInput;
+            tradedPlayer.tradeReturn = returnInput;
+
+            tradedPlayers.push(tradedPlayer);
+            playerRoster.splice(index, 1);
+
+            renderRoster();
+            renderTradedPlayers();
+
+        } else {
+            alert("Player not found in roster.");
+        }
+    }
 });
 
 function renderRemovedPlayers() {
@@ -233,6 +261,26 @@ function renderRemovedPlayers() {
         </ul>
     `;
 }
+
+function renderTradedPlayers() {
+    document.getElementById("tradedPlayersDisplay").innerHTML = `
+        <ul>
+            ${tradedPlayers.map(player => {
+                return `
+                    <li>
+                        ${player.name} -
+                        ${player.position} -
+                        Age: ${player.age} -
+                        Overall: ${player.overall} -
+                        Salary: ${player.salary} -
+                        Unit: ${player.unit}
+                    </li>
+                `;
+            }).join("")}
+        </ul>
+    `;
+}
+
 // ======================================================
 // ARRANGE SELECT SYSTEM
 // ======================================================
