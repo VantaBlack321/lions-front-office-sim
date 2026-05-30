@@ -59,3 +59,21 @@ Before ending a session, explain out loud:
     splice() = removes from array
     map() = transforms array items
     reduce() = combines many values into one total
+
+TEST CASES
+
+[ ] Add player with full info
+[ ] Add player with missing age
+[ ] Add duplicate player
+[ ] Add player over salary cap
+[ ] Remove player with reason
+[ ] Add removed player back
+[ ] Trade active player
+[ ] Try trading player not on active roster
+[ ] Edit salary under cap
+[ ] Edit salary over cap
+[ ] Clear roster
+[ ] Check averages after clear
+[ ] Check remaining salary cap after remove
+[ ] Check removedPlayers display after multiple removals
+[ ] Check tradedPlayers display after multiple trades

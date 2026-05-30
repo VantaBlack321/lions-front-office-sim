@@ -1,0 +1,19 @@
+1. A player should not be in active roster and removedPlayers at the same time.
+
+2. A player should not be in active roster and tradedPlayers at the same time.
+
+3. Salary cap should only calculate active roster players.
+
+4. Removed players should show removal reason.
+
+5. Traded players should show trade team, trade return, and trade reason.
+
+6. renderRoster() should reflect playerRoster.
+
+7. renderRemovedPlayers() should reflect removedPlayers.
+
+8. renderTradedPlayers() should reflect tradedPlayers.
+
+9. If no players exist, averages should show N/A, not NaN.
+
+10. If a player is added back from removedPlayers, they should disappear from removedPlayers.
