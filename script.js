@@ -5,19 +5,20 @@
 
 console.log("This is a Lions GM Simulator")
 
+// Active roster players currently on the team
 const playerRoster = []
 
-// removedPlayers = cut / released / retired
+// removedPlayers = cut / released / retired players
 const removedPlayers = []
 
-// tradedPlayers = sent to another team
+// tradedPlayers = players sent to another team
 const tradedPlayers = []
 
 // ======================================================
 // PLAYER FUNCTIONS
 // ======================================================
 
-// Create a player object and store it inside the roster array
+// Create a player object and store it inside the active roster array
 function addPlayer(name, position, age, overall, salary, unit) {
     const player = {
         name: name,
@@ -41,9 +42,10 @@ function addPlayer(name, position, age, overall, salary, unit) {
 // addEventListener(...) = waits for user interaction
 // innerHTML = updates the website display dynamically
 
+// Maximum salary cap allowed for the roster
 const salaryCapMax = 301200000
 
-// Show the starting roster immediately when the page loads
+// Rebuild the active roster display and update roster summary stats
 function renderRoster() {
     document.getElementById("rosterDisplay").innerHTML = `
         <ul>
@@ -62,14 +64,17 @@ function renderRoster() {
         </ul>
     `;
 
+    // Calculate total overall rating from all active players
     const totalOverallRating = playerRoster.reduce((total, player) => {
     return total + player.overall;
     }, 0);
 
+    // Calculate total age from all active players
     const totalAge = playerRoster.reduce((total, player) => {
     return total + player.age;
     }, 0);
 
+    // If there are no players, avoid showing NaN for averages
     if (playerRoster.length === 0) {
     document.getElementById("averageOverallRating").innerText =
         "Average Overall Rating: N/A";
@@ -78,6 +83,7 @@ function renderRoster() {
         "Average Ages: N/A";
 
     } else {
+    // Calculate averages only when the roster has players
     const averageOverallRating =
         totalOverallRating / playerRoster.length;
 
@@ -106,7 +112,8 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     // ======================================================
 
     // Grab player information from the input fields
-    // Add the new player into the roster
+    // Validate duplicates and salary cap
+    // Add the new player into the active roster
     // Re-render the updated roster display
 
     if (selectedAction === "addPlayerBtn") {
@@ -129,7 +136,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 
         const unitInput = document.getElementById("playerUnit").value;
 
-        // Check if the player already exists in the roster
+        // Check if the player already exists in the active roster
         const existingPlayer = playerRoster.find(player => player.name === nameInput);
 
         // Calculate current total salary before adding the new player
@@ -149,6 +156,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
         // If all checks pass, add the player
         } else {
 
+            // If this player was previously removed, remove them from removedPlayers
             const removedIndex = removedPlayers.findIndex(
                 player => player.name === nameInput
             );
@@ -157,6 +165,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
                 removedPlayers.splice(removedIndex, 1);
             }
 
+            // Add player back to the active roster
             addPlayer(nameInput, positionInput, ageInput, overallInput, salaryInput, unitInput);
 
             renderRoster();
@@ -168,13 +177,13 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     // ======================================================
 
     // Grab the player name typed into the input field
-    // Find the matching player inside the roster array
-    // Remove the player if a match is found
-    // Re-render the updated roster display
+    // Find the matching player inside the active roster
+    // Move the player into removedPlayers if found
+    // Re-render the active and removed player displays
 
     } else if (selectedAction === "removePlayerBtn") {
 
-        // Find the player's position/index inside the array
+        // Find the player's position/index inside the active roster array
         const nameToRemove =
             document.getElementById("playerName").value;
 
@@ -182,12 +191,13 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
             player => player.name === nameToRemove
         );
 
-        // Remove the player from the roster array
+        // If player exists, move them from active roster to removedPlayers
         if (index !== -1) {
             const removedPlayer = playerRoster[index];
 
             const reasonInput = document.getElementById("removeReason").value;
 
+            // Store the removal reason on the removed player object
             removedPlayer.remove = reasonInput;
 
             removedPlayers.push(removedPlayer);
@@ -205,12 +215,19 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     // CLEAR ROSTER
     // ======================================================
 
-    // Remove all players from the roster array
-    // Clear the roster display on the website
+    // Remove all players from the active roster array
+    // Re-render the active roster display
 
     } else if (selectedAction === "clearRosterBtn") {
         playerRoster.length = 0;
         renderRoster();
+
+    // ======================================================
+    // TRADE PLAYER
+    // ======================================================
+
+    // Move a player from the active roster into tradedPlayers
+    // Store trade details like team, return, and reason
 
     } else if (selectedAction === "tradePlayerBtn") {
         const nameToTrade = document.getElementById("playerName").value;
@@ -226,6 +243,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
             const teamInput = document.getElementById("tradeTeam").value;
             const returnInput = document.getElementById("tradeReturn").value;
 
+            // Add trade-specific information to the player object
             tradedPlayer.tradeReason = reasonInput;
             tradedPlayer.tradedTo = teamInput;
             tradedPlayer.tradeReturn = returnInput;
@@ -242,6 +260,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
     }
 });
 
+// Render the removed players section
 function renderRemovedPlayers() {
     document.getElementById("removedPlayersDisplay").innerHTML = `
         <ul>
@@ -262,6 +281,7 @@ function renderRemovedPlayers() {
     `;
 }
 
+// Render the traded players section
 function renderTradedPlayers() {
     document.getElementById("tradedPlayersDisplay").innerHTML = `
         <ul>
@@ -302,6 +322,7 @@ document.getElementById("sortBtn").addEventListener("click", function() {
         playerRoster.sort((a, b) => b.overall - a.overall);
         renderRoster();
     
+    // TODO: This option says sortSalary, but currently uses overall comparison
     } else if (arrangeAction === "sortSalary") {
         playerRoster.sort((a, b) => b.overall - a.overall);
         renderRoster();
@@ -312,6 +333,7 @@ document.getElementById("sortBtn").addEventListener("click", function() {
 // EDIT SYSTEM
 // ======================================================
 
+// Edit a player's position using the typed player name
 document.getElementById("editPositionBtn").addEventListener("click", function() {
     const nameInput = document.getElementById("playerName").value;
     const positionInput = document.getElementById("playerPosition").value;
@@ -326,6 +348,7 @@ document.getElementById("editPositionBtn").addEventListener("click", function() 
     }
 });
 
+// Edit a player's age using the typed player name
 document.getElementById("editAgeBtn").addEventListener("click", function() {
     const nameInput = document.getElementById("playerName").value;
     const ageInput = parseInt(document.getElementById("playerAge").value);
@@ -333,15 +356,14 @@ document.getElementById("editAgeBtn").addEventListener("click", function() {
     const playerToEdit = playerRoster.find(player => player.name === nameInput);
 
     if (playerToEdit) {
-        // Edit a player's age using the typed player name
         playerToEdit.age = ageInput;
-        // Update the player's age and refresh the display
         renderRoster();
     } else {
         alert("Player not found in roster.");
     }
 });
 
+// Edit a player's overall rating using the typed player name
 document.getElementById("editOverallBtn").addEventListener("click", function() {
     const nameInput = document.getElementById("playerName").value;
     const overallInput = parseInt(document.getElementById("playerOverall").value);
@@ -349,15 +371,14 @@ document.getElementById("editOverallBtn").addEventListener("click", function() {
     const playerToEdit = playerRoster.find(player => player.name === nameInput);
 
     if (playerToEdit) {
-        // Edit a player's overall rating using the typed player name
         playerToEdit.overall = overallInput;
-        // Update the player's overall rating and refresh the display
         renderRoster();
     } else {
         alert("Player not found in roster.");
     }
 });
 
+// Edit a player's salary while still checking salary cap rules
 document.getElementById("editSalaryBtn").addEventListener("click", function() {
     const nameInput = document.getElementById("playerName").value;
     const salaryInput = parseInt(document.getElementById("salaryCap").value);
@@ -365,10 +386,12 @@ document.getElementById("editSalaryBtn").addEventListener("click", function() {
     const playerToEdit = playerRoster.find(player => player.name === nameInput);
 
     if (playerToEdit) {
+        // Calculate current roster salary before changing this player's salary
         const totalSalary = playerRoster.reduce((total, player) => {
             return total + player.salary;
         }, 0);
 
+        // Replace old salary with new salary to test if cap would be exceeded
         const newTotalSalary = totalSalary - playerToEdit.salary + salaryInput;
 
         if (newTotalSalary > salaryCapMax) {
