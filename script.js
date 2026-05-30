@@ -52,9 +52,9 @@ function renderRoster() {
                     <li>
                         ${player.name} - 
                         ${player.position} - 
-                        Age: ${player.age} - 
-                        Overall: ${player.overall} - 
-                        Salary: ${player.salary} -
+                        Age: ${isNaN(player.age) ? "N/A" : player.age}
+                        Overall: ${isNaN(player.overall) ? "N/A" : player.overall}
+                        Salary: ${isNaN(player.salary) ? "N/A" : player.salary}
                         Unit: ${player.unit}
                     </li>
                 `;
@@ -237,7 +237,7 @@ function renderRemovedPlayers() {
 // ARRANGE SELECT SYSTEM
 // ======================================================
 
-document.getElementById("arrangeBtn").addEventListener("click", function() {
+document.getElementById("sortBtn").addEventListener("click", function() {
     
     // Get the selected sorting option from the dropdown
     const arrangeAction = document.getElementById("actionArrange").value;
@@ -263,6 +263,20 @@ document.getElementById("arrangeBtn").addEventListener("click", function() {
 // ======================================================
 // EDIT SYSTEM
 // ======================================================
+
+document.getElementById("editPositionBtn").addEventListener("click", function() {
+    const nameInput = document.getElementById("playerName").value;
+    const positionInput = document.getElementById("playerPosition").value;
+
+    const playerToEdit = playerRoster.find(player => player.name === nameInput);
+
+    if (playerToEdit) {
+        playerToEdit.position = positionInput;
+        renderRoster();
+    } else {
+        alert("Player not found in roster.");
+    }
+});
 
 document.getElementById("editAgeBtn").addEventListener("click", function() {
     const nameInput = document.getElementById("playerName").value;
