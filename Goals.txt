@@ -1,18 +1,3 @@
-LIONS GM SIMULATOR — CURRENT PRIORITIES
-
-Current goal:
-Stabilize the current app before adding major new features.
-
-Main rule:
-Do not start full trading logic until removedPlayers works correctly.
-
-==================================================
-PRIORITY 1 — N/A / NaN CLEANUP
-==================================================
-
-Goal:
-Prevent ugly NaN values from showing on the website.
-
 Tasks:
 [ ] Display Age as N/A if player.age is NaN
 [ ] Display Overall as N/A if player.overall is NaN
@@ -22,33 +7,9 @@ Tasks:
     Average Ages: N/A
 [ ] Make sure remaining salary cap still displays correctly when roster is empty
 
-Concepts practiced:
-- isNaN()
-- display formatting
-- edge cases
-- difference between raw data and UI display
-
 ==================================================
 PRIORITY 2 — REMOVED PLAYERS SYSTEM
 ==================================================
-
-Goal:
-Make removed players work fully.
-
-Expected flow:
-User types player name
-User types removal reason
-User selects Remove Player
-User clicks Run Action
-
-Then:
-1. Find player index in playerRoster
-2. Save full player object
-3. Add removal reason to that player object
-4. Push player into removedPlayers
-5. Remove player from playerRoster
-6. renderRoster()
-7. renderRemovedPlayers()
 
 Tasks:
 [ ] Confirm const removedPlayers = [] exists
@@ -66,33 +27,9 @@ Tasks:
 [ ] Make sure removed player disappears from Active Players
 [ ] Make sure removed player appears under Removed Players
 
-Concepts practiced:
-- multiple arrays
-- moving objects between arrays
-- findIndex()
-- splice()
-- push()
-- object properties
-- render functions
-
 ==================================================
 PRIORITY 3 — ADD BACK FROM REMOVED PLAYERS
 ==================================================
-
-Goal:
-If a removed player is added back, remove them from removedPlayers.
-
-Expected logic:
-If Add Player is selected:
-1. Check if player already exists in active roster
-2. If active, alert duplicate
-3. Else if salary cap exceeded, alert
-4. Else:
-   - check removedPlayers
-   - if matching player exists in removedPlayers, remove them from removedPlayers
-   - add player to playerRoster
-   - renderRoster()
-   - renderRemovedPlayers()
 
 Tasks:
 [ ] In addPlayerBtn logic, check removedPlayers using findIndex()
@@ -108,8 +45,6 @@ Concepts practiced:
 ==================================================
 PRIORITY 4 — TEST ALL CURRENT BUTTONS
 ==================================================
-
-Before adding new features, test every button manually.
 
 Checklist:
 [ ] Add Player works
@@ -131,15 +66,10 @@ Checklist:
 [ ] Average Age updates
 [ ] Remaining Salary Cap updates
 
-If a button breaks:
-Write down the bug before fixing it.
 
 ==================================================
 PRIORITY 5 — CLEAN SALARY LOGIC
 ==================================================
-
-Goal:
-Salary cap should stay accurate after add, remove, clear, and edit salary.
 
 Tasks:
 [ ] Confirm totalSalary uses reduce()
@@ -148,30 +78,9 @@ Tasks:
 [ ] Confirm removing a player updates remaining cap
 [ ] Confirm clearing roster resets remaining cap
 
-Concepts practiced:
-- reduce()
-- validation
-- derived data
-- salary cap rules
-
 ==================================================
 PRIORITY 6 — TRADING SYSTEM LATER
 ==================================================
-
-Do not start this until removedPlayers works.
-
-Future trade flow:
-1. User types player name
-2. User chooses trade team
-3. User types received return
-4. User types trade reason
-5. Find player in playerRoster
-6. Save full player object
-7. Add tradedTo, tradeReturn, tradeReason properties
-8. Push player into tradedPlayers
-9. Remove player from playerRoster
-10. renderRoster()
-11. renderTradedPlayers()
 
 Tasks for later:
 [ ] const tradedPlayers = []
@@ -181,7 +90,6 @@ Tasks for later:
 [ ] tradeReturn input
 [ ] tradeReason input
 
-Do not touch until removedPlayers is stable.
 
 ==================================================
 PRIORITY 7 — README / GITHUB CLEANUP
@@ -213,14 +121,6 @@ Once current features work:
     - player value score
     - team rating simulation
 
-Good commit messages:
-- Fix NaN display handling
-- Add removed players system
-- Track removal reasons
-- Add edit position feature
-- Improve roster metrics
-- Clean salary cap calculations
-
 ==================================================
 LEARNING CHECKPOINT
 ==================================================
@@ -239,16 +139,3 @@ Before ending a session, explain out loud:
     splice() = removes from array
     map() = transforms array items
     reduce() = combines many values into one total
-
-==================================================
-CURRENT NEXT SESSION PLAN
-==================================================
-
-1. Fix N/A display for player stats
-2. Fix N/A display for averages when roster is empty
-3. Finish renderRemovedPlayers()
-4. Finish add-back-from-removed logic
-5. Test all buttons
-6. Commit to GitHub
-
-Do not add new major features until these are done.
