@@ -64,6 +64,15 @@ function renderRoster() {
         </ul>
     `;
 
+    const totalSalary = playerRoster.reduce((total, player) => {
+    return total + (isNaN(player.salary) ? 0 : player.salary);
+    }, 0);
+
+    const remainingSalaryCap = salaryCapMax - totalSalary;
+
+    document.getElementById("remainingSalaryCap").innerText =
+        `Remaining Salary Cap: ${remainingSalaryCap}`;
+
     // Calculate total overall rating from all active players
     const totalOverallRating = playerRoster.reduce((total, player) => {
     return total + player.overall;
@@ -269,11 +278,11 @@ function renderRemovedPlayers() {
                     <li>
                         ${player.name} -
                         ${player.position} -
-                        Age: ${player.age} -
-                        Overall: ${player.overall} -
-                        Salary: ${player.salary} -
+                        Age: ${isNaN(player.age) ? "N/A" : player.age} -
+                        Overall: ${isNaN(player.overall) ? "N/A" : player.overall} -
+                        Salary: ${isNaN(player.salary) ? "N/A" : player.salary} -
                         Unit: ${player.unit} -
-                        Remove Reasons: ${player.remove}
+                        Remove Reason: ${player.remove || "N/A"}
                     </li>
                 `;
             }).join("")}
@@ -290,10 +299,13 @@ function renderTradedPlayers() {
                     <li>
                         ${player.name} -
                         ${player.position} -
-                        Age: ${player.age} -
-                        Overall: ${player.overall} -
-                        Salary: ${player.salary} -
-                        Unit: ${player.unit}
+                        Age: ${isNaN(player.age) ? "N/A" : player.age} -
+                        Overall: ${isNaN(player.overall) ? "N/A" : player.overall} -
+                        Salary: ${isNaN(player.salary) ? "N/A" : player.salary} -
+                        Unit: ${player.unit} -
+                        Traded To: ${player.tradedTo || "N/A"} -
+                        Trade Return: ${player.tradeReturn || "N/A"} -
+                        Trade Reason: ${player.tradeReason || "N/A"}
                     </li>
                 `;
             }).join("")}
@@ -324,7 +336,7 @@ document.getElementById("sortBtn").addEventListener("click", function() {
     
     // TODO: This option says sortSalary, but currently uses overall comparison
     } else if (arrangeAction === "sortSalary") {
-        playerRoster.sort((a, b) => b.overall - a.overall);
+        playerRoster.sort((a, b) => b.salary - a.salary);
         renderRoster();
     }
 });
