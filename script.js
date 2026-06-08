@@ -141,7 +141,7 @@ document.getElementById("runActionBtn").addEventListener("click", function() {
 
         const salaryInput = parseInt(
             document.getElementById("salaryCap").value
-        )
+        );
 
         const unitInput = document.getElementById("playerUnit").value;
 
